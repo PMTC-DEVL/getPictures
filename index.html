@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   <meta charset="utf-8">
+<meta http-equiv="cache-control" content="no-store, no-cache, must-revalidate" />
+<meta http-equiv="Pragma" content="no-store, no-cache" />
+<meta http-equiv="Expires" content="0" />
+	<!-- <meta http-equiv="refresh" content="30"> -->
+	<style>
+		img{
+			height: 200px;
+		}
+	</style>
+    <title>
+      TEP2020 Update - Software Update for TEP Systems
+    </title>
+  </head>
+  <body>
+		<a id="randomLink" href ""> <button> Refresh </button></a>
+      <div id="gallery">
+		<p>Pas d'image ou non connecté</p>
+      </div>
+  </body>
+</html>
+
+<script type="text/javascript">
+  let imgList = [];
+  
+  const randomLink = document.getElementById('randomLink');
+  randomLink.href="?"+Math.floor(Math.random() * 1000);
+  
+  fetch("http://192.168.1.1:8000/listGallery")
+    .then(function(res) {
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then(function(value) {
+      imgList = value;
+	  let gallery = document.getElementById('gallery');
+  gallery.replaceChildren();
+      for (let i = 0; i < imgList.length; ++i) {
+        const newImage = document.createElement("img");
+        newImage.setAttribute("src", "http://192.168.1.1:8080/gallery/" + i+'.png');
+		
+		const newLink = document.createElement("a");
+		newLink.setAttribute("href", "http://192.168.1.1:8080/gallery/" + i+'.png');
+		newLink.setAttribute("download", i+'.png');
+        newLink.appendChild(newImage);
+        gallery.appendChild(newLink);
+      }
+    })
+    .catch(function(err) {
+    });
+</script>
